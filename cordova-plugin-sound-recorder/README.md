@@ -4,7 +4,7 @@
 ## 如何使用
 ```javascript
 $scope.record = function () {
-    var config = {duration:25};
+    var config = {duration:25};//duration单位为秒 必须大于等于 1
     cordova.plugins.SoundRecorder.record(config,function (data) {
       console.log('--------------------录音成功！文件保存位置---：' + data.uri);
     },function (error) {
