@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="cordova-plugin-sound-recorder" version="1.0.0" 
+	xmlns="http://apache.org/cordova/ns/plugins/1.0" 
+	xmlns:android="http://schemas.android.com/apk/res/android">
+	<name>SoundRecorder</name>
+	<js-module name="SoundRecorder" src="www/SoundRecorder.js">
+		<clobbers target="cordova.plugins.SoundRecorder" />
+	</js-module>
+	<platform name="android">
+		<config-file parent="/*" target="res/xml/config.xml">
+			<feature name="SoundRecorder">
+				<param name="android-package" value="com.bolu.plugins.sound.SoundRecorder" />
+			</feature>
+		</config-file>
+		<config-file parent="/*" target="AndroidManifest.xml">
+			<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+			<uses-permission android:name="android.permission.RECORD_AUDIO" />
+			<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+		</config-file>
+		<source-file src="src/android/SoundRecorder.java" target-dir="src/com/bolu/plugins/sound"/>
+	</platform>
+</plugin>
