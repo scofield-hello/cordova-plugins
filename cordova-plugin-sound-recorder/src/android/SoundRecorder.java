@@ -93,7 +93,7 @@ public class SoundRecorder extends CordovaPlugin {
           } catch (Exception e) {
             stopRecord();
             LOG.e(TAG, "录音过程中出现线程异常问题", e);
-            callbackContext.error("录音过程中出现线程异常问题");
+            callbackContext.error("录音过程中出现线程异常问题.");
           }
         }
       }
@@ -105,13 +105,13 @@ public class SoundRecorder extends CordovaPlugin {
     audioRecord.stop();
     audioRecord.release();
     audioRecord = null;
-    LOG.d(TAG, "录音程序已停止");
+    LOG.d(TAG, "录音程序已停止.");
   }
 
   private void startRecord(JSONObject config, final CallbackContext callbackContext) throws  JSONException {
     duration = (config.has("duration") ? config.getInt("duration") : DEFAULT_DURATION);
     if (duration < 1) {
-      callbackContext.error("参数配置错误,录音时间最短为1秒");
+      callbackContext.error("参数配置错误,录音时间最短为1秒.");
     } else {
       String filename = DateFormat.format(DATE_FORMAT, System.currentTimeMillis()).toString();
       String directoryPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + AUDIO_DIR;
@@ -123,8 +123,8 @@ public class SoundRecorder extends CordovaPlugin {
           return;
         }
       }
-      final String rawFilename = directoryPath + "/" + filename + RAW_SUFFIX;
-      final String wavFilename = directoryPath + "/" + filename + WAV_SUFFIX;
+      final String rawFilename = directoryPath + File.separator  + filename + RAW_SUFFIX;
+      final String wavFilename = directoryPath + File.separator  + filename + WAV_SUFFIX;
       int audioSource = MediaRecorder.AudioSource.MIC;
       audioRecord = new AudioRecord(audioSource, simpleRate, chanel, encoding, bufferSize);
       audioRecord.startRecording();
@@ -142,7 +142,7 @@ public class SoundRecorder extends CordovaPlugin {
             if (!rawAudioFile.delete()){
               stopRecord();
               LOG.e(TAG, "处理音频文件出错,旧文件无法删除");
-              callbackContext.error("处理音频文件出错,旧文件找不到");
+              callbackContext.error("处理音频文件出错,旧文件找不到.");
               return;
             }
           }
@@ -151,7 +151,7 @@ public class SoundRecorder extends CordovaPlugin {
           } catch (FileNotFoundException e){
             stopRecord();
             LOG.e(TAG, "处理音频文件出错,文件找不到", e);
-            callbackContext.error("处理音频文件出错,文件找不到");
+            callbackContext.error("处理音频文件出错,文件找不到.");
             return;
           }
           while(isRecording){
@@ -162,7 +162,7 @@ public class SoundRecorder extends CordovaPlugin {
               } catch (IOException e) {
                 stopRecord();
                 LOG.e(TAG, "处理音频文件出错,写入时异常", e);
-                callbackContext.error("处理音频文件出错,写入时异常");
+                callbackContext.error("处理音频文件出错,写入时异常.");
                 return;
               }
             }
@@ -172,7 +172,7 @@ public class SoundRecorder extends CordovaPlugin {
           } catch (IOException e) {
             stopRecord();
             LOG.e(TAG, "处理音频文件出错,关闭输出流时异常", e);
-            callbackContext.error("处理音频文件出错,关闭输出流时异常");
+            callbackContext.error("处理音频文件出错,关闭输出流时异常.");
             return;
           }
           long byteRate = 16 * simpleRate * chanel /8;
@@ -191,7 +191,7 @@ public class SoundRecorder extends CordovaPlugin {
           }catch (IOException e){
             stopRecord();
             LOG.e(TAG, "处理音频文件出错,格式转换时异常", e);
-            callbackContext.error("处理音频文件出错,格式转换时异常");
+            callbackContext.error("处理音频文件出错,格式转换时异常.");
           }
         }
       });
