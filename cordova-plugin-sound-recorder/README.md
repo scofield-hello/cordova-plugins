@@ -16,4 +16,22 @@
  ```
 
 - 手动开始/结束录音
+```javascript
+//手动开始
+$scope.manualStart = function () {  
+ cordova.plugins.SoundRecorder.manualRecord(function (seconds) {    
+  console.log('已录音' + seconds+"秒");
+ },function (message) {    
+  console.log(message);  
+ }
+)};
 
+//手动停止
+$scope.manualEnd = function () {  
+ cordova.plugins.SoundRecorder.manualStop(function (data) {
+  console.log('--------------------录音成功！---：' + data.uri);  
+ },function (message) {   
+  console.log(message);  
+ }
+)};
+```
