@@ -338,12 +338,12 @@ public class SoundRecorder extends CordovaPlugin {
   }
 
   private void stopRecord(){
-    isRecording = false;
-    audioRecord.stop();
-    audioRecord.release();
-    audioRecord = null;
-    duration = 0;
-    LOG.d(TAG, "录音程序已停止.");
+      isRecording = false;
+      audioRecord.stop();
+      audioRecord.release();
+      audioRecord = null;
+      duration = 0;
+      LOG.d(TAG, "录音程序已停止.");
   }
 
   private void writeHeaderData(FileOutputStream fileOutputStream, long srcLength,long destLength, long sampleRate, int channel, long byteRate) throws IOException{
@@ -410,7 +410,7 @@ public class SoundRecorder extends CordovaPlugin {
         countdownRecord(config, callbackContext);
         break;
       case MODE_MANUAL:
-        manualStop(callbackContext);
+        manualRecord(callbackContext);
         break;
       default:
         break;
