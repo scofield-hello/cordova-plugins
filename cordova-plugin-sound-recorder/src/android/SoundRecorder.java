@@ -290,10 +290,12 @@ public class SoundRecorder extends CordovaPlugin {
          try {
            Thread.sleep(1000);
            duration ++;
-           LOG.d(TAG, "已录音时长" + duration+ "秒");
-           PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, duration);
-           pluginResult.setKeepCallback(true);
-           callbackContext.sendPluginResult(pluginResult);
+           if (isRecording){
+             LOG.d(TAG, "已录音时长" + duration+ "秒");
+             PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, duration);
+             pluginResult.setKeepCallback(true);
+             callbackContext.sendPluginResult(pluginResult);
+           }
          } catch (InterruptedException e) {
            stopRecord();
            LOG.e(TAG, "录音过程中出现线程异常", e);
