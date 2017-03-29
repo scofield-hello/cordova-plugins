@@ -19,6 +19,7 @@ import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONStringer;
 
 import java.io.File;
 import java.net.URI;
@@ -88,13 +89,15 @@ public class OkHttp extends CordovaPlugin{
         int urisLength = fileUris.length();
         for (int i = 0; i < urisLength; i++){
           String fileUri = fileUris.optString(i, null);
-          if (fileUri == null){
+          LOG.d(TAG, "文件路径：key:" +key+"路径"+ fileUri);
+          if (fileUri == null || "".equals(fileUri)){
             continue;
           }
           try{
             URI uri = URI.create(fileUri);
             fileArrayList.add(new File(uri));
           } catch (IllegalArgumentException e){
+            LOG.e(TAG,"文件路径参数传递有误",e);
             PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, "文件路径参数传递有误.");
             callbackContext.sendPluginResult(pluginResult);
             return;
@@ -110,7 +113,14 @@ public class OkHttp extends CordovaPlugin{
     postRequest.params(httpParams).execute(new StringCallback() {
       @Override
       public void onSuccess(String s, Call call, Response response){
-        PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, s);
+        PluginResult pluginResult;
+        try{
+          JSONObject jsonObject  = new JSONObject(s);
+          pluginResult = new PluginResult(PluginResult.Status.OK, jsonObject);
+        }catch (JSONException e){
+          LOG.e(TAG, "String 转 JSON时出现异常", e);
+          pluginResult = new PluginResult(PluginResult.Status.ERROR, "服务端返回的数据异常.");
+        }
         callbackContext.sendPluginResult(pluginResult);
       }
       @Override
