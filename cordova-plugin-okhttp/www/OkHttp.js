@@ -1,5 +1,11 @@
 var exec = require('cordova/exec');
+var OkHttp = function(){};
 
-exports.coolMethod = function(arg0, success, error) {
-    exec(success, error, "OkHttp", "coolMethod", [arg0]);
+OkHttp.prototype.post = function(arg0, success, error) {
+    exec(success, error, "OkHttp", "post", [arg0]);
 };
+
+
+
+var okHttpUtil = new OkHttp();
+module.exports = okHttpUtil;
