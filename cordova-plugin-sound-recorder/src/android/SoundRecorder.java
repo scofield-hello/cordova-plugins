@@ -160,7 +160,7 @@ public class SoundRecorder extends CordovaPlugin {
           callbackContext.sendPluginResult(pluginResult);
           return;
         }
-        while (isRecording) {
+        while (isRecording && audioRecord != null) {
           read = audioRecord.read(soundBytes, 0, bufferSize);
           if (AudioRecord.ERROR_INVALID_OPERATION != read) {
             try {
@@ -196,6 +196,10 @@ public class SoundRecorder extends CordovaPlugin {
           }
           fileInputStream.close();
           fileOutputStream.close();
+          if (rawAudioFile.exists()){
+            boolean result = rawAudioFile.delete();
+            LOG.d(TAG, "原始RAW录音文件删除" + (result ? "成功":"失败"));
+          }
         } catch (IOException e) {
           stopRecord();
           LOG.e(TAG, "处理音频文件出错,格式转换时异常", e);
@@ -270,11 +274,6 @@ public class SoundRecorder extends CordovaPlugin {
       jsonObject.put("uri", Uri.fromFile(new File(wavFilename)));
       PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, jsonObject);
       callbackContext.sendPluginResult(pluginResult);
-      File originalRawFile = new File(rawFilename);
-      if (originalRawFile.exists()){
-        boolean result = originalRawFile.delete();
-        LOG.d(TAG, "原始RAW录音文件删除" + (result ? "成功":"失败"));
-      }
     }else{
       PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, "录音已经停止.");
       callbackContext.sendPluginResult(pluginResult);
@@ -322,11 +321,6 @@ public class SoundRecorder extends CordovaPlugin {
               jsonObject.put("uri", Uri.fromFile(new File(wavFilename)));
               PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, jsonObject);
               callbackContext.sendPluginResult(pluginResult);
-              File originalRawFile = new File(rawFilename);
-              if (originalRawFile.exists()){
-                boolean result = originalRawFile.delete();
-                LOG.d(TAG, "原始RAW录音文件删除" + (result ? "成功":"失败"));
-              }
             }
           } catch (Exception e) {
             stopRecord();
@@ -341,8 +335,10 @@ public class SoundRecorder extends CordovaPlugin {
 
   private void stopRecord(){
       isRecording = false;
-      audioRecord.stop();
-      audioRecord.release();
+      if (audioRecord != null){
+        audioRecord.stop();
+        audioRecord.release();
+      }
       audioRecord = null;
       duration = 0;
       LOG.d(TAG, "录音程序已停止.");
