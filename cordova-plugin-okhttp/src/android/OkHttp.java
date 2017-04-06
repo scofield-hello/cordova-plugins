@@ -2,8 +2,6 @@ package com.bolu.plugins.okhttp;
 
 import android.net.Uri;
 
-import com.bolu.cordova.security.PwdEncoder;
-import com.bolu.cordova.security.SecurityEncoder;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.HttpParams;
@@ -19,7 +17,6 @@ import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONStringer;
 
 import java.io.File;
 import java.net.URI;
@@ -67,10 +64,6 @@ public class OkHttp extends CordovaPlugin{
       return;
     }
     HttpParams httpParams = new HttpParams();
-    String token = SecurityEncoder.genToken(32);
-    String signature = PwdEncoder.encrypt(token);
-    httpParams.put("v_name",token);
-    httpParams.put("v_value", signature);
     if (data != null){
       for (Iterator<?> iterator = data.keys(); iterator.hasNext();){
         String key = iterator.next().toString();
