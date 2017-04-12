@@ -1,0 +1,13 @@
+apply plugin: 'com.android.application'
+
+allprojects {
+    repositories {
+        mavenCentral();
+        jcenter();
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+dependencies {
+    compile 'com.github.scofield-hello:CameraApplication:V1.0.0'
+}
